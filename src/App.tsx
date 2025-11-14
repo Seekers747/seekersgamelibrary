@@ -1,35 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Container, SimpleGrid, Heading } from "@chakra-ui/react"
+import gamesData from "./data/games.json"
+import GameCard from "./components/GameCard"
+import GameModal from "./components/GameModal"
+import { useState } from "react"
+import type { Game } from "./types"
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+export default function App() {
+    const [games] = useState<Game[]>(gamesData as Game[])
+    const [open, setOpen] = useState<boolean>(false)
+    const [current, setCurrent] = useState<Game | undefined>(undefined)
+    const onOpen = (g: Game) => { setCurrent(g); setOpen(true) }
+    return (
+        <Container maxW="container.xl" py={6}>
+            <Heading mb={6}>Game Library</Heading>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} rowGap={2} columnGap={3}>
+                {games.map(g => <GameCard key={g.id} game={g} onOpen={onOpen} />)}
+            </SimpleGrid>
+            <GameModal isOpen={open} onClose={()=>setOpen(false)} game={current ?? undefined} />
+        </Container>
+    )   
 }
-
-export default App

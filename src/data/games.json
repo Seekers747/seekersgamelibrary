@@ -1,0 +1,26 @@
+[
+    {
+      "id": "pong",
+      "title": "Classic Pong",
+      "thumb": "/thumbs/pong.png",
+      "url": "https://example.com/pong/index.html",
+      "embedType": "iframe",
+      "tags": ["arcade", "multiplayer"]
+    },
+    {
+      "id": "tetris",
+      "title": "Tetris",
+      "thumb": "/thumbs/tetris.png",
+      "url": "https://example.com/tetris/index.html",
+      "embedType": "iframe",
+      "tags": ["puzzle", "singleplayer"]
+    },
+    {
+      "id": "space-invaders",
+      "title": "Space Invaders",
+      "thumb": "/thumbs/space-invaders.jpg",
+      "url": "https://example.com/space-invaders/index.html",
+      "embedType": "iframe",
+      "tags": ["arcade", "shooter"]
+    }
+]
