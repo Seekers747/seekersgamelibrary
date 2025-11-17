@@ -6,4 +6,9 @@ export type Game = {
     url: string // play or embed URL
     embedType?: "iframe" | "webgl" | "html" | "link"
     tags?: string[]
+    rating?: number
+    metacritic?: number
+    released?: string
+    platforms?: string[]
+    playtime?: number
 }
