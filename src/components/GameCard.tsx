@@ -59,7 +59,7 @@ export default function GameCard({ game }: { game: Game; }) {
         </Heading>
         
         {game.released && (
-          <Text fontSize="xs" color="gray.300">
+          <Text fontSize="xs" color="white">
             {new Date(game.released).getFullYear()}
           </Text>
         )}
@@ -73,7 +73,7 @@ export default function GameCard({ game }: { game: Game; }) {
         </Flex>
         
         {game.platforms && game.platforms.length > 0 && (
-          <Text fontSize="2xs" color="gray.400" lineClamp={1}>
+          <Text fontSize="2xs" color="white" lineClamp={1}>
             {game.platforms.slice(0, 2).join(", ")}
           </Text>
         )}

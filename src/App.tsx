@@ -1,15 +1,25 @@
-import { Container, SimpleGrid, Heading, Button, HStack } from "@chakra-ui/react"
+import { Container, SimpleGrid, Heading, Button, HStack, Flex } from "@chakra-ui/react"
 import GameCard from "./components/GameCard"
+import GameOrder from "./components/GameOrder"
 import { useState } from "react"
 import { useGames } from "./hooks/useGames"
 
 export default function App() {
     const [page, setPage] = useState<number>(1)
-    const { games, loading, hasNext } = useGames(page)
+    const [ordering, setOrdering] = useState<string>("relevance")
+    const { games, loading, hasNext } = useGames(page, ordering)
+    
+    const handleOrderChange = (newOrdering: string) => {
+        setOrdering(newOrdering)
+        setPage(1) // Reset to page 1 when ordering changes
+    }
     
     return (
         <Container py={6}>
-            <Heading mb={6}>Game Library</Heading>
+            <Flex justify="space-between" align="center" mb={6}>
+                <Heading>Game Library</Heading>
+                <GameOrder value={ordering} onChange={handleOrderChange} />
+            </Flex>
             {loading ? (
                 <Heading size="md">Loading games...</Heading>
             ) : (

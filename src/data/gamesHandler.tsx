@@ -22,8 +22,8 @@ interface GamesResponse {
     next: string | null;
 }
 
-export const fetchGames = async (page: number = 1): Promise<GamesResponse> => {
-    const url = `${baseUrl}/games?key=${apiKey}&page=${page}&page_size=15`;
+export const fetchGames = async (page: number = 1, ordering: string = "-metacritic"): Promise<GamesResponse> => {
+    const url = `${baseUrl}/games?key=${apiKey}&page=${page}&page_size=20&ordering=${ordering}`;
     console.log("Fetching games from:", url.replace(apiKey, 'API_KEY_HIDDEN'));
     const response = await fetch(url);
     if (!response.ok) {

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchGames } from "../data/gamesHandler";
 import type { Game } from "../types";
 
-export function useGames(page: number) {
+export function useGames(page: number, ordering: string = "-rating") {
     const [games, setGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [hasNext, setHasNext] = useState<boolean>(false);
@@ -11,7 +11,7 @@ export function useGames(page: number) {
         const loadGames = async () => {
             try {
                 setLoading(true);
-                const response = await fetchGames(page);
+                const response = await fetchGames(page, ordering);
                 const mappedGames: Game[] = response.results.map(game => ({
                     id: game.id.toString(),
                     title: game.name,
@@ -34,7 +34,7 @@ export function useGames(page: number) {
             }
         };
         loadGames();
-    }, [page]);
+    }, [page, ordering]);
 
     return { games, loading, hasNext };
 }
