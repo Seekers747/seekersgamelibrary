@@ -1,15 +1,14 @@
-import { Container, SimpleGrid, Heading } from "@chakra-ui/react"
+import { Container, SimpleGrid, Heading, Button, HStack } from "@chakra-ui/react"
 import GameCard from "./components/GameCard"
-import GameModal from "./components/GameModal"
 import { useState, useEffect } from "react"
 import type { Game } from "./types"
 import { fetchGames } from "./data/gamesHandler"
 
 export default function App() {
     const [games, setGames] = useState<Game[]>([])
-    const [open, setOpen] = useState<boolean>(false)
-    const [current, setCurrent] = useState<Game | undefined>(undefined)
     const [loading, setLoading] = useState<boolean>(true)
+    const [page, setPage] = useState<number>(1)
+    const [hasNext, setHasNext] = useState<boolean>(false)
     
     useEffect(() => {
         const loadGames = async () => {
@@ -17,7 +16,7 @@ export default function App() {
                 setLoading(true)
                 console.log("API Key exists:", !!import.meta.env.VITE_RAWG_API_KEY)
                 console.log("API Key value:", import.meta.env.VITE_RAWG_API_KEY ? "SET" : "NOT SET")
-                const response = await fetchGames(1)
+                const response = await fetchGames(page)
                 const mappedGames: Game[] = response.results.map(game => ({
                     id: game.id.toString(),
                     title: game.name,
@@ -33,6 +32,7 @@ export default function App() {
                 }))
                 console.log("Mapped games:", mappedGames.length)
                 setGames(mappedGames)
+                setHasNext(!!response.next)
             } catch (error) {
                 console.error("Error fetching games:", error)
             } finally {
@@ -40,9 +40,7 @@ export default function App() {
             }
         }
         loadGames()
-    }, [])
-    
-    const onOpen = (g: Game) => { setCurrent(g); setOpen(true) }
+    }, [page])
     
     return (
         <Container py={6}>
@@ -50,11 +48,30 @@ export default function App() {
             {loading ? (
                 <Heading size="md">Loading games...</Heading>
             ) : (
-                <SimpleGrid columns={5} gap={4}>
-                    {games.map(g => <GameCard key={g.id} game={g} onOpen={onOpen} />)}
-                </SimpleGrid>
+                <>
+                    <SimpleGrid columns={5} gap={4}>
+                        {games.map(g => <GameCard key={g.id} game={g} />)}
+                    </SimpleGrid>
+                    
+                    <HStack justify="center" mt={8} gap={4}>
+                        <Button
+                            onClick={() => setPage(p => Math.max(1, p - 1))}
+                            disabled={page === 1}
+                            size="lg"
+                        >
+                            ← Previous
+                        </Button>
+                        <Heading size="md">Page {page}</Heading>
+                        <Button
+                            onClick={() => setPage(p => p + 1)}
+                            disabled={!hasNext}
+                            size="lg"
+                        >
+                            Next →
+                        </Button>
+                    </HStack>
+                </>
             )}
-            <GameModal isOpen={open} onClose={()=>setOpen(false)} game={current ?? undefined} />
         </Container>
     )   
 }

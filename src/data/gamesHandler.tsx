@@ -23,7 +23,7 @@ interface GamesResponse {
 }
 
 export const fetchGames = async (page: number = 1): Promise<GamesResponse> => {
-    const url = `${baseUrl}/games?key=${apiKey}&page=${page}&page_size=20`;
+    const url = `${baseUrl}/games?key=${apiKey}&page=${page}&page_size=15`;
     console.log("Fetching games from:", url.replace(apiKey, 'API_KEY_HIDDEN'));
     const response = await fetch(url);
     if (!response.ok) {
@@ -35,7 +35,7 @@ export const fetchGames = async (page: number = 1): Promise<GamesResponse> => {
     return data;
 };
 
-export const fetchGameDetails = async (id: number): Promise<Game> => {
+export const fetchGameDetails = async (id: number) => {
     const response = await fetch(`${baseUrl}/games/${id}?key=${apiKey}`);
     if (!response.ok) throw new Error("Failed to fetch game details");
     return response.json();

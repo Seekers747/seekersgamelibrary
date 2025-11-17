@@ -1,9 +1,16 @@
 import { Box, Image, Heading, Badge, VStack, HStack, Flex, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import type { Game } from "../types";
 
-export default function GameCard({ game, onOpen }: { game: Game; onOpen: (g: Game) => void; }) {
+export default function GameCard({ game }: { game: Game; }) {
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    navigate(`/game/${game.id}`);
+  };
+  
   return (
-    <Box as="button" position="relative" onClick={() => onOpen(game)} bg="gray.900"
+    <Box as="button" position="relative" onClick={handleClick} bg="gray.900"
       rounded="lg" shadow="lg" overflow="hidden" textAlign="left" w="100%" h="280px"
       transition="transform 0.2s" _hover={{ transform: "scale(1.02)" }}>
       <Image
